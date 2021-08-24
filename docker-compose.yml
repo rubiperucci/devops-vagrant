@@ -1,0 +1,61 @@
+version: '3'
+services:
+    sonardb:
+        image: 'postgres:12.1-alpine'
+        volumes:
+            - postgresql:/var/lib/postgresql
+            - postgresql_data:/var/lib/postgresql/data
+        environment:
+            POSTGRES_USER: sonar
+            POSTGRES_PASSWORD: sonar
+        networks:
+            - att-net
+
+    sonarqube:
+        image: 'sonarqube:8.9.0-community'
+        volumes:
+            - sonarqube_data:/opt/sonarqube/data
+            - sonarqube_extensions:/opt/sonarqube/extensions
+            - sonarqube_logs:/opt/sonarqube/logs
+        command: sudo sysctl -w vm.max_map_count=524288
+        command: sudo sysctl -w fs.file-max=131072
+        command: ulimit -n 131072
+        command: ulimit -u 8192
+        ports:
+            - 9000:9000
+        environment:
+            SONARQUBE_JDBC_URL: jdbc:postgresql://sonardb:5432/sonar
+            SONAR_JDBC_USERNAME: sonar
+            SONAR_JDBC_PASSWORD: sonar
+        networks:
+            - att-net
+
+    jenkins:
+        image: 'jenkins/jenkins'
+        volumes:
+            - jenkins_home:/var/jenkins_home
+        ports:
+            - 8080:8080
+            - 50000:50000
+        networks:
+            - att-net
+
+    nexus:
+        image: 'sonatype/nexus3'
+        volumes:
+            - nexus_data:/nexus-data
+        ports:
+            - 8081:8081
+        networks:
+            - att-net
+volumes:
+    postgresql:
+    postgresql_data:
+    sonarqube_logs:
+    sonarqube_data:
+    sonarqube_extensions:
+    jenkins_home:
+    nexus_data:
+
+networks:
+    att-net:
