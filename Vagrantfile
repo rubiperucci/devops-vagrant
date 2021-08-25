@@ -1,16 +1,16 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/focal64"
+  config.vm.disk :disk, size: "50GB", primary: true
   config.vm.synced_folder ".", "/vagrant", disabled: true
   config.vm.box_check_update = true
 
   # Ports for sonarqube
   config.vm.network "forwarded_port", guest: 9000, host: 9000
   # Ports for jenkins
-  config.vm.network "forwarded_port", guest: 8080, host: 8080
+  config.vm.network "forwarded_port", guest: 8080, host: 8090
   config.vm.network "forwarded_port", guest: 50000, host: 50000
   # Ports for nexus
   config.vm.network "forwarded_port", guest: 8081, host: 8081
-
 
   config.vm.provider "virtualbox" do |vb|
     vb.gui = false
@@ -30,6 +30,7 @@ Vagrant.configure("2") do |config|
     sudo sysctl -w vm.max_map_count=262144
     git clone https://github.com/daniel33gomez/devops-infrastructure.git
     cd devops-infrastructure
+    docker-compose -f docker-compose.yml up  
     
   SHELL
 end
