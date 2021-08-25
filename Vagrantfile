@@ -30,7 +30,7 @@ Vagrant.configure("2") do |config|
     sudo sysctl -w vm.max_map_count=262144
     git clone https://github.com/daniel33gomez/devops-infrastructure.git
     cd devops-infrastructure
-    docker-compose -f docker-compose.yml up  
+    sudo docker-compose -f docker-compose.yml up  
     
   SHELL
 end
