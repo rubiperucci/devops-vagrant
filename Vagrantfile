@@ -16,7 +16,7 @@ Vagrant.configure("2") do |config|
     vb.gui = false
     vb.name = "DevOpsInfrastructrureVM"
     vb.cpus = 2
-    vb.memory = "8096"
+    vb.memory = "4096"
   end
 
   config.vm.provision "shell", inline: <<-SHELL
@@ -27,10 +27,11 @@ Vagrant.configure("2") do |config|
     sudo apt-get update
     sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose -y
     sudo apt install git
-    sudo sysctl -w vm.max_map_count=262144
+    sudo -i
+    echo "vm.max_map_count=262144" >> /etc/sysctl.conf
     git clone https://github.com/daniel33gomez/devops-infrastructure.git
     cd devops-infrastructure
-    sudo docker-compose -f docker-compose.yml up  
+    docker-compose -f docker-compose.yml up  
     
   SHELL
 end
