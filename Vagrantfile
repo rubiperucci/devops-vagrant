@@ -25,13 +25,13 @@ Vagrant.configure("2") do |config|
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
     echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
     sudo apt-get update
-    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose -y
+    sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose openjdk-11-jdk -y
     sudo apt install git
     sudo -i
     echo "vm.max_map_count=262144" >> /etc/sysctl.conf
     git clone https://github.com/daniel33gomez/devops-infrastructure.git
     cd devops-infrastructure
-    docker-compose -f docker-compose.yml up  
+    docker-compose -f docker-compose.yml up -d
     
   SHELL
 end
