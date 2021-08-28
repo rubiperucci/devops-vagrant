@@ -1,11 +1,11 @@
 pipeline {
-    agent {label 'linux' }
+    agent {label 'linux-agent' }
     tools {
         nodejs 'NodeJS 16.8.0'
     }
     environment {
         DOCKER_HUB_CREDENTIALS = credentials("hub.docker")
-        DOCKER_IMAGE_NAME = "daniel33gomez/metal-slug-maker"
+        DOCKER_IMAGE_NAME = "rest-api/metal-slug-maker"
     }
     stages {
         stage('install packages') {
